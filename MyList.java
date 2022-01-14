@@ -1,43 +1,44 @@
-package ex1;
+package ex2;
 
-public class MyList {
-	private Cell firstCell ;
+public class MyList<T> {
+	private Cell<T> firstCell ;
 	private int size ;
+	
+	
 	
 	public MyList() {
 		size =  0 ;
 	}
-	
-	public void add(String str) {
-		if(str == null) {
+	public void add(T s) {
+		if(s == null) {
 			throw new NullPointerException();
 		}
-		else if(firstCell == null) {
-			firstCell = new Cell(str);
+		if(firstCell == null) {
+			firstCell = new Cell<>(s);
 			size ++ ;
 		}
 		else {
-			firstCell = new Cell(str,firstCell);
+			firstCell = new Cell<>(s,firstCell);
 			size++;
 		}
 	}
 	
-	public void add(String str, int index) {
+	public void add(T s, int index) {
 		if(index > size) {
 			throw new IllegalArgumentException() ;
 		}
-		Cell c ;
-		c = firstCell ;
+		Cell<T> c = firstCell ;
 		if (index == 0) {
-			firstCell = new Cell(str, firstCell) ;
+			firstCell = new Cell<>(s, firstCell) ;
 			size ++ ;
 		}
 		else {
 			for(int i = 0 ; i <= index ; i ++) {
+				
 
 				if( i == index - 1) {
-					
-					c.setSuccessor(new Cell(str,c.getSuccessor()));
+		
+					c.setSuccessor(new Cell<>(s,c.getSuccessor()));
 					size ++ ;
 					break;
 				}
@@ -50,19 +51,18 @@ public class MyList {
 		
 	}
 	
-	public void addLast(String str) {
-		if(str == null) {
+	public void addLast(T s) {
+		if(s == null) {
 			throw new NullPointerException();
 		}
-		Cell c ;
-		c = firstCell ;
+		Cell<T> c = firstCell ;
 		if(c == null) {
-			add(str);
+			add(s);
 		}
 		else {
 			while(true) {
 				if(c.getSuccessor() == null) {
-					c.setSuccessor(new Cell (str));
+					c.setSuccessor(new Cell<> (s));
 					this.size ++ ;
 					break ;
 				}
@@ -77,32 +77,28 @@ public class MyList {
 		return size;
 	
 	}
-	
 	@Override
 	public String toString() {
-		Cell c ;
-		c = firstCell ;
-		StringBuffer strb = new StringBuffer();
+		StringBuffer sb = new StringBuffer();
+		Cell<T> c  = firstCell ;
 		while(true) {
 			if(c.getSuccessor() != null) {
-				strb.append(c.getValue() + ", ");
+				sb.append(c.getValue() + ", ");
 				c = c.getSuccessor();
 			}
 			else {
-				strb.append(c.getValue());
+				sb.append(c.getValue());
 				break ;
 			}
 		}
-		return strb.toString();
+		return sb.toString();
 	}
 	
-	public String get(int i) {
-		
+	public T get(int i) {
 		if(i >= size || size == 0 || i < 0) {
 			throw new IllegalArgumentException() ;
 		}
-		Cell c ;
-		c = firstCell ;
+		Cell<T> c = firstCell ;
 		
 		for(int j = 0 ; j <= i ; j ++) {
 				if( i == j ) {
@@ -115,21 +111,38 @@ public class MyList {
 	
 	public int sumLetter() {
 		int sum = 0 ;
-		Cell c ;
+		Cell<T> c ;
 		c = firstCell ;
 		while(true) {
 			if(c.getSuccessor() != null) {
-				sum += c.getValue().length();
-				c = c.getSuccessor();
-				
+				sum += ((String) c.getValue()).length();
+				c = c.getSuccessor();	
 			}
 			else {
-				sum += c.getValue().length();
+				sum += ((String) c.getValue()).length();
 				break ;
 			}
 		}
 		return sum ;
 		
+	}
+	
+	public boolean contrain(T value) {
+		if(firstCell == null) {
+			throw new IllegalStateException() ;
+		}
+		else if(value == null) {
+			throw new NullPointerException() ;
+		}
+		Cell<T> c ;
+		c = firstCell ;
+		while(c.getSuccessor() != null) {
+			if(c.getValue().equals(value)) {
+				return true ;
+			}
+			c = c.getSuccessor();	
+		}
+		return false ;
 	}
 	
 }

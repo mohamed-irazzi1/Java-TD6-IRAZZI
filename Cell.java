@@ -1,27 +1,29 @@
-package ex1;
+package ex2;
 
-public class Cell {
+public class Cell<T> {
 	
-	private String value ;
-	private Cell successor ;
-	public String getValue() {
+	private T value ;
+	private Cell<T> successor ;
+	
+	public T getValue() {
 		return value;
 	}
-	public void setValue(String value) {
+	public void setValue(T value) {
 		this.value = value;
 	}
-	public Cell getSuccessor() {
+	public Cell<T> getSuccessor() {
 		return successor;
 	}
-	public void setSuccessor(Cell successor) {
+	public void setSuccessor(Cell<T> successor) {
 		this.successor = successor;
 	}
-	public Cell(String value) {
+	public Cell(T value) {
 		this(value, null);
 	}
 	
-	public Cell(String str, Cell successor) {
-		this.value = str ;
+	public Cell(T s, Cell<T> successor) {
+		this.value = s ;
 		this.successor = successor ;
 	}
+	
 }
